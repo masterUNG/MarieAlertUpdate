@@ -11,7 +11,7 @@ class ScoreListView extends StatelessWidget {
         Container(
           alignment: Alignment.topLeft,
           child: Text(
-            'Date :',
+            'วันที่ :',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -32,7 +32,7 @@ class ScoreListView extends StatelessWidget {
         Container(
           alignment: Alignment.topLeft,
           child: Text(
-            'Remark:',
+            'หมายเหตุ:',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -53,7 +53,7 @@ class ScoreListView extends StatelessWidget {
         Container(
           alignment: Alignment.topLeft,
           child: Text(
-            'Check by :',
+            'บันทึกโดย :',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -74,7 +74,7 @@ class ScoreListView extends StatelessWidget {
               Container(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Score Plus',
+                  'รับคะแนนเพิ่ม',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -98,7 +98,7 @@ class ScoreListView extends StatelessWidget {
               Container(
                 alignment: Alignment.topRight,
                 child: Text(
-                  'Score Del',
+                  'หักคะแนน',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
