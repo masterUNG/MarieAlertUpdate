@@ -31,13 +31,36 @@ class _RegisterState extends State<Register> {
   FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
 
-    firebaseMessaging.getToken().then((String value){
+    firebaseMessaging.getToken().then((String value) {
       token = value;
     });
-    
+  }
+
+  Widget registerButton() {
+    return Container(
+      margin: EdgeInsets.only(top: 8.0),
+      width: 200.0,
+      child: FlatButton.icon(
+        color: Colors.white,
+        icon: Icon(
+          Icons.save,
+          color: Colors.blue[900],
+        ),
+        label: Text(
+          titleAppBar,
+          style: TextStyle(color: Colors.blue[900]),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        onPressed: () {
+          checkValidate();
+        },
+      ),
+    );
   }
 
   Widget userTextFormField() {
@@ -73,7 +96,8 @@ class _RegisterState extends State<Register> {
       duration: Duration(seconds: 8),
       backgroundColor: Colors.blue[900],
       content: Text(message),
-      action: SnackBarAction(textColor: Colors.yellow,
+      action: SnackBarAction(
+        textColor: Colors.yellow,
         label: 'Close',
         onPressed: () {},
       ),
@@ -92,7 +116,8 @@ class _RegisterState extends State<Register> {
       showSnackBar('ไม่สามารถใช้ $user ลงทะเบียนได้ เพราะมีคนอื่นใช้ไปแล้ว คะ');
     } else {
       print('user = $user, password = $password, token = $token');
-      String urlAddUser = 'http://tscore.ms.ac.th/App/addUser.php?isAdd=true&User=$user&Password=$password&Token=$token';
+      String urlAddUser =
+          'http://tscore.ms.ac.th/App/addUser.php?isAdd=true&User=$user&Password=$password&Token=$token';
       var responseAddUser = await get(urlAddUser);
       var resultAddUser = json.decode(responseAddUser.body);
       print('resultAddUser ==>> $resultAddUser');
@@ -126,13 +151,17 @@ class _RegisterState extends State<Register> {
     return IconButton(
       icon: Icon(Icons.cloud_upload),
       onPressed: () {
-        print('Click Upload');
-        if (formKey.currentState.validate()) {
-          formKey.currentState.save();
-          checkUserAndUpload(context);
-        }
+        checkValidate();
       },
     );
+  }
+
+  void checkValidate() {
+    print('Click Upload');
+    if (formKey.currentState.validate()) {
+      formKey.currentState.save();
+      checkUserAndUpload(context);
+    }
   }
 
   @override
@@ -159,7 +188,8 @@ class _RegisterState extends State<Register> {
                 Container(
                   margin: EdgeInsets.only(top: 8.0),
                   child: passwordTextFormField(),
-                )
+                ),
+                registerButton(),
               ],
             ),
           ),

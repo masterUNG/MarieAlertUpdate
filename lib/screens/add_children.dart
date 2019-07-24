@@ -31,7 +31,7 @@ class _AddChildrenState extends State<AddChildren> {
     getDataFromSharePreFerance(context);
   }
 
-  void getDataFromSharePreFerance(BuildContext context) async {
+  Future<void> getDataFromSharePreFerance(BuildContext context) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     int idInt = sharedPreferences.getInt('id');
     // print('idInt ==> $idInt');
@@ -76,7 +76,7 @@ class _AddChildrenState extends State<AddChildren> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       color: Colors.blue[900],
       child: Text(
-        'Scan Code',
+        'สแกน',
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
@@ -105,7 +105,7 @@ class _AddChildrenState extends State<AddChildren> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       color: Colors.blue[300],
       child: Text(
-        'Save',
+        'บันทึก',
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
@@ -144,7 +144,7 @@ class _AddChildrenState extends State<AddChildren> {
   Widget findChildren() {
     return RaisedButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      child: Text('Find'),
+      child: Text('ค้นหา'),
       onPressed: () {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
@@ -222,7 +222,7 @@ class _AddChildrenState extends State<AddChildren> {
     return TextFormField(
       controller: textEditingController,
       decoration: InputDecoration(
-        labelText: 'QR Readed',
+        labelText: 'บาร์โค้ด',
         labelStyle: TextStyle(color: Colors.white),
       ),
       validator: (String value) {
@@ -266,7 +266,7 @@ class _AddChildrenState extends State<AddChildren> {
                 child: showName(),
               ),
               Container(
-                width: 250.0,
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -277,7 +277,7 @@ class _AddChildrenState extends State<AddChildren> {
                 ),
               ),
               Container(
-                width: 250.0,
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: Row(
                   children: <Widget>[
                     Expanded(
