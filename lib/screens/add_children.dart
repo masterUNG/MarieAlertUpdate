@@ -112,7 +112,11 @@ class _AddChildrenState extends State<AddChildren> {
         if (statusSave) {
           listChildrens.add(barcode);
           print('listChildren ==> ${listChildrens.toString()}');
-          uploadToServer(context);
+          if (checkIdChildrens()) {
+            uploadToServer(context);
+          } else {
+            showSnackBar('มี บุตรคนนี่ แล้วคะ');
+          }
         } else {
           showSnackBar('Bar Code ยังไม่สมบูรณ์ คะ');
         }
@@ -120,14 +124,25 @@ class _AddChildrenState extends State<AddChildren> {
     );
   }
 
-  void uploadToServer(BuildContext context) async {
-     
-    String urlParents = 'http://tscore.ms.ac.th/App/editParentWhereIdCode.php?isAdd=true&idCode=$barcode&parents=$tokenString';
+  bool checkIdChildrens() {
+    bool result = true;
+
+    for (var testIdChildere in listChildrens) {
+      if (testIdChildere == idCodeString) {
+        result = false;
+      }
+    }
+
+    return result;
+  }
+
+  Future<void> uploadToServer(BuildContext context) async {
+    String urlParents =
+        'http://tscore.ms.ac.th/App/editParentWhereIdCode.php?isAdd=true&idCode=$barcode&parents=$tokenString';
     print('urlParents ==> $urlParents');
     var parentsResponse = await get(urlParents);
     var resultParents = json.decode(parentsResponse.body);
     print('resultParents ==> $resultParents');
-
 
     String urlString =
         'http://tscore.ms.ac.th/App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${listChildrens.toString()}';
@@ -201,10 +216,9 @@ class _AddChildrenState extends State<AddChildren> {
       setState(() => this.barcode = barcode);
 
       if (barcode.length != 0) {
-          textEditingController.text = barcode;
-          loadChildren();
-        }
-
+        textEditingController.text = barcode;
+        loadChildren();
+      }
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         // The user did not grant the camera permission.
@@ -219,7 +233,7 @@ class _AddChildrenState extends State<AddChildren> {
   }
 
   Widget qrTextFormField() {
-    return TextFormField(
+    return TextFormField(keyboardType: TextInputType.number,
       controller: textEditingController,
       decoration: InputDecoration(
         labelText: 'บาร์โค้ด',

@@ -92,29 +92,29 @@ class ScoreListView extends StatelessWidget {
             ],
           ),
         ),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.topRight,
-                child: Text(
-                  'หักคะแนน',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topRight,
-                child: Text(
-                  scoreModels[index].score_del,
-                  style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red[600]),
-                ),
-              )
-            ],
-          ),
-        ),
+        // Expanded(
+        //   child: Column(
+        //     children: <Widget>[
+        //       Container(
+        //         alignment: Alignment.topRight,
+        //         child: Text(
+        //           'หักคะแนน',
+        //           style: TextStyle(fontWeight: FontWeight.bold),
+        //         ),
+        //       ),
+        //       Container(
+        //         alignment: Alignment.topRight,
+        //         child: Text(
+        //           scoreModels[index].score_del,
+        //           style: TextStyle(
+        //               fontSize: 25.0,
+        //               fontWeight: FontWeight.bold,
+        //               color: Colors.red[600]),
+        //         ),
+        //       )
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
