@@ -56,7 +56,7 @@ class _AddChildrenState extends State<AddChildren> {
         // print('strings.length ==> ${strings.length}');
 
         for (var value in strings) {
-          listChildrens.add(value);
+          listChildrens.add(value.trim());
         }
         // print('listChildrens ==> ${listChildrens.toString()}');
       }
@@ -109,10 +109,12 @@ class _AddChildrenState extends State<AddChildren> {
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
+        print('statusSave = $statusSave');
         if (statusSave) {
-          listChildrens.add(barcode);
           print('listChildren ==> ${listChildrens.toString()}');
+          // print('checkIdChildren = ${checkIdChildrens()}');
           if (checkIdChildrens()) {
+            listChildrens.add(barcode);
             uploadToServer(context);
           } else {
             showSnackBar('มี บุตรคนนี่ แล้วคะ');
@@ -126,20 +128,24 @@ class _AddChildrenState extends State<AddChildren> {
 
   bool checkIdChildrens() {
     bool result = true;
-
+    print('idCodeString = $idCodeString');
+    print('listChildrens = $listChildrens');
+    int index = 0;
     for (var testIdChildere in listChildrens) {
-      if (testIdChildere == idCodeString) {
+      print('testIdChildre[$index] = $testIdChildere');
+      if (idCodeString == testIdChildere) {
+        print('Equer');
         result = false;
       }
+      index = index + 1;
     }
-
     return result;
   }
 
   Future<void> uploadToServer(BuildContext context) async {
     String urlParents =
         'http://tscore.ms.ac.th/App/editParentWhereIdCode.php?isAdd=true&idCode=$barcode&parents=$tokenString';
-    print('urlParents ==> $urlParents');
+    // print('urlParents ==> $urlParents');
     var parentsResponse = await get(urlParents);
     var resultParents = json.decode(parentsResponse.body);
     print('resultParents ==> $resultParents');
@@ -233,7 +239,8 @@ class _AddChildrenState extends State<AddChildren> {
   }
 
   Widget qrTextFormField() {
-    return TextFormField(keyboardType: TextInputType.number,
+    return TextFormField(
+      keyboardType: TextInputType.number,
       controller: textEditingController,
       decoration: InputDecoration(
         labelText: 'บาร์โค้ด',
@@ -253,58 +260,51 @@ class _AddChildrenState extends State<AddChildren> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.blue[400],
       key: snackBarKey,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Text(titleAppBar),
       ),
       body: Form(
         key: formKey,
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.white, Colors.blue[900]],
-                  begin: Alignment(-1, -1))),
-          padding: EdgeInsets.only(top: 100.0),
-          alignment: Alignment(0, -1),
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 150.0,
-                child: showAvata(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(alignment: Alignment.center,
+              height: 100.0,
+              child: showAvata(),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20.0),
+              child: showName(),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: qrTextFormField(),
+                  ),
+                  findChildren()
+                ],
               ),
-              Container(
-                margin: EdgeInsets.only(top: 20.0),
-                child: showName(),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: scanButton(),
+                  ),
+                  Expanded(
+                    child: saveChildrenButton(context),
+                  )
+                ],
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: qrTextFormField(),
-                    ),
-                    findChildren()
-                  ],
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: scanButton(),
-                    ),
-                    Expanded(
-                      child: saveChildrenButton(context),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

@@ -96,16 +96,16 @@ class _ShowChildrenListState extends State<ShowChildrenList>
         backgroundColor: Colors.blue[900],
         title: Text(titleAppBar),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue[900],
-        child: Icon(Icons.group_add),
-        onPressed: () {
-          print('You click Add');
-          var addChildrenRoute = MaterialPageRoute(
-              builder: (BuildContext context) => AddChildren());
-          Navigator.of(context).push(addChildrenRoute);
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.blue[900],
+      //   child: Icon(Icons.group_add),
+      //   onPressed: () {
+      //     print('You click Add');
+      //     var addChildrenRoute = MaterialPageRoute(
+      //         builder: (BuildContext context) => AddChildren());
+      //     Navigator.of(context).push(addChildrenRoute);
+      //   },
+      // ),
       body: ChildrenListView(childrenModels),
     );
   }

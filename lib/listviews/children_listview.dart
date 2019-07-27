@@ -1,13 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mariealert/screens/show_score_list.dart';
 import '../models/children_model.dart';
+import 'package:http/http.dart' show get;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChildrenListView extends StatelessWidget {
+  // Explicit
   List<ChildrenModel> childrenModels;
   List<String> idCodeList = [];
   ChildrenListView(this.childrenModels);
+  Widget widget;
 
   // Method
+
   Widget showButtonScore(BuildContext context, int index) {
     return Container(
       child: FlatButton.icon(
@@ -81,13 +88,26 @@ class ChildrenListView extends StatelessWidget {
       ),
       onPressed: () {
         Navigator.of(context).pop();
-        deleteChildrent(index);
+        deleteChildrent(index, context);
       },
     );
   }
 
-  Future<void> deleteChildrent(int index) async {
+  Future<void> deleteChildrent(int index, BuildContext context) async {
     String idCodeDelete = childrenModels[index].idcode;
+    idCodeList.removeWhere((items) => (items == idCodeDelete));
+    print('new idCodeList = $idCodeList');
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int idLogin = sharedPreferences.getInt('id');
+
+    String urlString =
+        'http://tscore.ms.ac.th/App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${idCodeList.toString()}';
+    print('url = $urlString');
+
+    var response = await get(urlString);
+
+    Navigator.of(context).pop();
   }
 
   Widget cancleButton(BuildContext context) {
