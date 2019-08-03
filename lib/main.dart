@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mariealert/screens/home.dart';
 import 'screens/authen.dart';
 import 'screens/show_news_list.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Marie Alert',
       debugShowCheckedModeBanner: false,
-      home: Authen(),
+      home: Home(),
     );
   }
 }

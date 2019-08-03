@@ -16,6 +16,7 @@ class _RegisterState extends State<Register> {
 
   // Variable
   String user, password, token;
+  double myWidthdou = 200.0;
 
   // Text
   String titleAppBar = 'สมัครสมาชิก';
@@ -23,7 +24,8 @@ class _RegisterState extends State<Register> {
   String titlePassword = 'รหัส';
   String titleHaveSpace = 'ห้ามมี ช่องวาง คะ';
   String messgeHaveSpace = 'กรุณา กรองข้อมูล ทุกช่อง คะ';
-  String hindUser = 'กรอก ชื่อใช้งานที่อยากได้';
+  String hindUser = 'ภาษาอังกฤษ ห้ามมีช่องว่าง';
+  String helpUser = 'กรอก ชื่อ ที่เป็นภาษาอังกฤษ เท่านั้น';
   String hiddPassword = 'กรอก รหัสที่อยากได้';
   String passwordFalse1 = 'รหัส ต้องมีไม่ต่ำกว่า 6 ตัวอักษร คะ';
 
@@ -42,7 +44,7 @@ class _RegisterState extends State<Register> {
   Widget registerButton() {
     return Container(
       margin: EdgeInsets.only(top: 8.0),
-      width: 200.0,
+      width: myWidthdou,
       child: FlatButton.icon(
         color: Colors.white,
         icon: Icon(
@@ -64,22 +66,31 @@ class _RegisterState extends State<Register> {
   }
 
   Widget userTextFormField() {
-    return TextFormField(
-      decoration: InputDecoration(
-          labelText: titleUser,
-          hintText: hindUser,
-          labelStyle: TextStyle(color: Colors.white),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              borderSide: BorderSide(color: Colors.white, width: 1.0))),
-      validator: (String value) {
-        if (checkHaveSpace(value)) {
-          return titleHaveSpace;
-        }
-      },
-      onSaved: (String value) {
-        user = value;
-      },
+    return Container(
+      width: myWidthdou,
+      child: TextFormField(
+        style: TextStyle(color: Colors.yellow[600]),
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            focusedBorder:
+                UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white)),
+            labelText: titleUser,
+            labelStyle: TextStyle(color: Colors.white),
+            helperText: helpUser,
+            helperStyle: TextStyle(color: Colors.white),
+            hintText: hindUser,
+            hintStyle: TextStyle(color: Colors.yellow)),
+        validator: (String value) {
+          if (checkHaveSpace(value)) {
+            return titleHaveSpace;
+          }
+        },
+        onSaved: (String value) {
+          user = value;
+        },
+      ),
     );
   }
 
@@ -126,24 +137,33 @@ class _RegisterState extends State<Register> {
   }
 
   Widget passwordTextFormField() {
-    return TextFormField(
-      decoration: InputDecoration(
+    return Container(
+      width: myWidthdou,
+      child: TextFormField(
+        style: TextStyle(color: Colors.yellow),
+        decoration: InputDecoration(
+          focusedBorder:
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+          enabledBorder:
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           labelText: titlePassword,
-          hintText: hiddPassword,
           labelStyle: TextStyle(color: Colors.white),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              borderSide: BorderSide(color: Colors.white, width: 1.0))),
-      validator: (String value) {
-        if (checkHaveSpace(value)) {
-          return messgeHaveSpace;
-        } else if (value.length <= 5) {
-          return passwordFalse1;
-        }
-      },
-      onSaved: (String value) {
-        password = value;
-      },
+          hintText: hiddPassword,
+          hintStyle: TextStyle(color: Colors.yellow),
+          helperText: hiddPassword,
+          helperStyle: TextStyle(color: Colors.white),
+        ),
+        validator: (String value) {
+          if (checkHaveSpace(value)) {
+            return messgeHaveSpace;
+          } else if (value.length <= 5) {
+            return passwordFalse1;
+          }
+        },
+        onSaved: (String value) {
+          password = value;
+        },
+      ),
     );
   }
 
@@ -180,15 +200,14 @@ class _RegisterState extends State<Register> {
                 gradient: LinearGradient(
                     begin: Alignment(-1, -1),
                     colors: [Colors.blue[50], Colors.blue[900]])),
-            padding: EdgeInsets.only(left: 50.0, right: 50.0, top: 50.0),
-            alignment: Alignment(0, -1),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                userTextFormField(),
                 Container(
-                  margin: EdgeInsets.only(top: 8.0),
-                  child: passwordTextFormField(),
+                  alignment: Alignment.topCenter,
+                  child: userTextFormField(),
                 ),
+                passwordTextFormField(),
                 registerButton(),
               ],
             ),
