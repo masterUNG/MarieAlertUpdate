@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:http/http.dart' show get;
 import 'dart:convert';
 import '../models/user_model.dart';
@@ -14,6 +15,7 @@ class Authen extends StatefulWidget {
 class _AuthenState extends State<Authen> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  Color colorText = Colors.blue[900];
 
   bool statusRemember = false;
   SharedPreferences sharedPreferences;
@@ -36,7 +38,7 @@ class _AuthenState extends State<Authen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDataFromSharePreferance(context);
+    // getDataFromSharePreferance(context);
   }
 
   void getDataFromSharePreferance(BuildContext context) async {
@@ -65,11 +67,18 @@ class _AuthenState extends State<Authen> {
     return Container(
       margin: EdgeInsets.only(top: 24.0),
       child: TextFormField(
+        style: TextStyle(color: colorText),
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                borderRadius: BorderRadius.circular(20.0)),
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white)),
+            focusedBorder:
+                UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+            icon: Icon(
+              Icons.account_box,
+              color: Colors.white,
+              size: 30.0,
+            ),
             hintStyle: TextStyle(color: Colors.white),
             labelText: titleUser,
             hintText: 'Your User',
@@ -89,12 +98,18 @@ class _AuthenState extends State<Authen> {
   Widget passwordTextFromField() {
     return Container(
       margin: EdgeInsets.only(top: 8.0),
-      child: TextFormField(
+      child: TextFormField(style: TextStyle(color: colorText),
         obscureText: true,
         decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                borderRadius: BorderRadius.circular(20.0)),
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white)),
+            focusedBorder:
+                UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+            icon: Icon(
+              Icons.lock,
+              color: Colors.white,
+              size: 30.0,
+            ),
             hintStyle: TextStyle(color: Colors.white),
             labelText: titlePassword,
             hintText: 'Your Password',
@@ -242,40 +257,66 @@ class _AuthenState extends State<Authen> {
     );
   }
 
+  Widget showForm() {
+    return Form(
+      key: formKey,
+      child: Container(
+        padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.lightBlue[50], Colors.blue[700]],
+                begin: Alignment(-1, -1))),
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              showLogo(),
+              userTextFromField(),
+              passwordTextFromField(),
+              rememberCheckBox(),
+              Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: Container(
+                      child: loginButton(context),
+                    ),
+                  )
+                ],
+              ),
+              myRegisger(context)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget arrowBack() {
+    return Positioned(
+      child: Container(
+        margin: EdgeInsets.only(top: 38.0, left: 12.0),
+        child: GestureDetector(
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.blue[800],
+          ),
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomPadding: false,
-      body: Form(
-        key: formKey,
-        child: Container(
-          padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.lightBlue[50], Colors.blue[700]],
-                  begin: Alignment(-1, -1))),
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                showLogo(),
-                userTextFromField(),
-                passwordTextFromField(),
-                rememberCheckBox(),
-                Row(
-                  children: <Widget>[
-                    new Expanded(
-                      child: Container(
-                        child: loginButton(context),
-                      ),
-                    )
-                  ],
-                ),
-                myRegisger(context)
-              ],
-            ),
-          ),
-        ),
+      body: Stack(
+        children: <Widget>[
+          showForm(),
+          arrowBack(),
+        ],
       ),
     );
   }

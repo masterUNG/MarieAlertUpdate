@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:mariealert/screens/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -320,7 +321,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
       print('Remember ===>> ${sharePreferances.getBool('Remember')}');
       if (sharePreferances.getBool('Remember') == null) {
         var backHomeRoute =
-            MaterialPageRoute(builder: (BuildContext context) => Authen());
+            MaterialPageRoute(builder: (BuildContext context) => Home());
         Navigator.of(context)
             .pushAndRemoveUntil(backHomeRoute, (Route<dynamic> route) => false);
       }

@@ -171,16 +171,29 @@ class _RegisterState extends State<Register> {
     return IconButton(
       icon: Icon(Icons.cloud_upload),
       onPressed: () {
+
         checkValidate();
       },
     );
+  }
+
+  Future<void> checkDulicateUser()async{
+    String urlPHP = 'http://tscore.ms.ac.th/App/getUserWhereUser.php?isAdd=true&User=$user';
+    var response = await get(urlPHP);
+    var result = json.decode(response.body);
+    String resultString = result.toString();
+    if (resultString == 'null') {
+      showSnackBar('เปลี่ยน ชื่อใช้งานใหม่ มีคนใช้ไปแล้วคะ');
+    } else {
+      checkUserAndUpload(context);
+    }
   }
 
   void checkValidate() {
     print('Click Upload');
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      checkUserAndUpload(context);
+      checkDulicateUser();
     }
   }
 

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mariealert/screens/authen.dart';
 import 'package:mariealert/screens/register.dart';
+import 'package:mariealert/screens/show_news_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -13,6 +16,23 @@ class _HomeState extends State<Home> {
   Color fontColor = Colors.blue[800];
 
   // Method
+  @override
+  void initState() {
+    super.initState();
+    checkPreference();
+  }
+
+  Future<void> checkPreference() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool statusBool = sharedPreferences.getBool('Remember');
+    print('statusBool = $statusBool');
+    if (statusBool) {
+      var serviceRoute =
+          MaterialPageRoute(builder: (BuildContext context) => ShowNewsList());
+      Navigator.of(context)
+          .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+    }
+  }
 
   Widget showLogo() {
     return Container(
@@ -56,7 +76,11 @@ class _HomeState extends State<Home> {
             color: Colors.white,
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          var authenRoute =
+              MaterialPageRoute(builder: (BuildContext context) => Authen());
+          Navigator.of(context).push(authenRoute);
+        },
       ),
     );
   }
@@ -78,7 +102,7 @@ class _HomeState extends State<Home> {
         onPressed: () {
           var registerRoute =
               MaterialPageRoute(builder: (BuildContext context) => Register());
-              Navigator.of(context).push(registerRoute);
+          Navigator.of(context).push(registerRoute);
         },
       ),
     );
