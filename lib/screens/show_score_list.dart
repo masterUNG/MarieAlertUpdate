@@ -41,8 +41,8 @@ class _ShowScoreListState extends State<ShowScoreList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Show Score'),
+      appBar: AppBar(backgroundColor: Colors.blue[900],
+        title: Text('แสดง คะแนน'),
       ),
       body: ScoreListView(scoreModels),
     );
