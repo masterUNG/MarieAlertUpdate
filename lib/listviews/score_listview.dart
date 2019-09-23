@@ -136,12 +136,26 @@ class ScoreListView extends StatelessWidget {
           decoration: index % 2 == 0
               ? BoxDecoration(color: Colors.blue[100])
               : BoxDecoration(color: Colors.blue[200]),
-          child: Column(
+          child: Row(
             children: <Widget>[
-              showDate(index),
-              showRemark(index),
-              showUserCheck(index),
-              showScore(index),
+              Container(
+                // color: Colors.grey,
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Column(
+                  children: <Widget>[
+                    showDate(index),
+                    showRemark(index),
+                    showUserCheck(index),
+                    showScore(index),
+                  ],
+                ),
+              ),
+              Container(padding: EdgeInsets.all(8.0),
+                width: MediaQuery.of(context).size.width * 0.5 - 16,
+                child: scoreModels[index].img_Path.length != 0
+                    ? Image.network(scoreModels[index].img_Path)
+                    : Text(''),
+              )
             ],
           ),
         );

@@ -9,7 +9,8 @@ class ScoreModel {
       status,
       class_id,
       room,
-      score_from;
+      score_from,
+      img_Path;
 
   ScoreModel(
       this.id,
@@ -22,9 +23,10 @@ class ScoreModel {
       this.status,
       this.class_id,
       this.room,
-      this.score_from);
+      this.score_from,
+      this.img_Path);
 
-  ScoreModel.fromJson(Map<String, dynamic> parseJson){
+  ScoreModel.fromJson(Map<String, dynamic> parseJson) {
     id = parseJson['id'];
     idcode = parseJson['idcode'];
     remark = parseJson['remark'];
@@ -36,6 +38,6 @@ class ScoreModel {
     class_id = parseJson['class_id'];
     room = parseJson['room'];
     score_from = parseJson['score_from'];
+    img_Path = parseJson['img_Path'];
   }
-
 }
