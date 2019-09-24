@@ -5,24 +5,30 @@ class ScoreListView extends StatelessWidget {
   List<ScoreModel> scoreModels = [];
   ScoreListView(this.scoreModels);
 
-  Widget showDate(int index) {
-    return Row(
-      children: <Widget>[
-        Container(
-          alignment: Alignment.topLeft,
-          child: Text(
-            'วันที่ :',
-            style: TextStyle(fontWeight: FontWeight.bold),
+  Widget showDate(int index, BuildContext context) {
+    return Container(width: MediaQuery.of(context).size.width * 0.5,
+      child: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.topLeft,
+            child: Text(
+              'วันที่ :',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        Container(
-          alignment: Alignment.topLeft,
-          child: Text(
-            scoreModels[index].lasupdate,
-            style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-        )
-      ],
+          Container(
+            alignment: Alignment.topLeft,
+            child: Column(mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  scoreModels[index].lasupdate,
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -143,7 +149,7 @@ class ScoreListView extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: Column(
                   children: <Widget>[
-                    showDate(index),
+                    showDate(index, context),
                     showRemark(index),
                     showUserCheck(index),
                     showScore(index),
