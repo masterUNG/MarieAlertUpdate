@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mariealert/screens/show_detail_image.dart';
 import '../models/news_model.dart';
 
 class DetailListView extends StatelessWidget {
@@ -37,6 +38,19 @@ class DetailListView extends StatelessWidget {
             height: 200,
             child: showPicture(),
           ),
+        ),
+        FlatButton(
+          child: Text(
+            'ขยายภาพ',
+            style: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold),
+          ),
+          onPressed: () {
+            MaterialPageRoute materialPageRoute =
+                MaterialPageRoute(builder: (BuildContext context) {
+              return ShowDetailImage(url: newsModel.picture,);
+            });
+            Navigator.of(context).push(materialPageRoute);
+          },
         ),
         Container(
           alignment: Alignment(0, -1),

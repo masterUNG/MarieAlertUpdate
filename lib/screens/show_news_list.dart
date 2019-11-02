@@ -10,11 +10,9 @@ import '../models/noti_model.dart';
 import '../models/user_model.dart';
 import '../listviews/news_listview.dart';
 import 'dart:async';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import './show_notification.dart';
 import './show_children_list.dart';
 import './add_children.dart';
-import './authen.dart';
+
 
 class ShowNewsList extends StatefulWidget {
   @override

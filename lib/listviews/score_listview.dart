@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mariealert/models/score_model.dart';
+import 'package:mariealert/screens/show_detail_image.dart';
 
 class ScoreListView extends StatelessWidget {
   List<ScoreModel> scoreModels = [];
   ScoreListView(this.scoreModels);
 
   Widget showDate(int index, BuildContext context) {
-    return Container(width: MediaQuery.of(context).size.width * 0.5,
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.5,
       child: Column(
         children: <Widget>[
           Container(
@@ -18,7 +20,8 @@ class ScoreListView extends StatelessWidget {
           ),
           Container(
             alignment: Alignment.topLeft,
-            child: Column(mainAxisSize: MainAxisSize.min,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
                   scoreModels[index].lasupdate,
@@ -132,6 +135,32 @@ class ScoreListView extends StatelessWidget {
     );
   }
 
+  Widget showImageAnExpand(int index, BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Image.network(scoreModels[index].img_Path),
+        FlatButton(
+          child: Text(
+            'ขยายภาพ',
+            style: TextStyle(
+              color: Colors.purple,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            MaterialPageRoute materialPageRoute =
+                MaterialPageRoute(builder: (BuildContext context) {
+              return ShowDetailImage(
+                url: scoreModels[index].img_Path,
+              );
+            });
+            Navigator.of(context).push(materialPageRoute);
+          },
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -156,10 +185,11 @@ class ScoreListView extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(padding: EdgeInsets.all(8.0),
+              Container(
+                padding: EdgeInsets.all(8.0),
                 width: MediaQuery.of(context).size.width * 0.5 - 16,
                 child: scoreModels[index].img_Path.length != 0
-                    ? Image.network(scoreModels[index].img_Path)
+                    ? showImageAnExpand(index, context)
                     : Text(''),
               )
             ],
