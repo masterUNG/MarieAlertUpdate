@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
+
 import 'package:mariealert/screens/authen.dart';
 import 'package:mariealert/screens/register.dart';
 import 'package:mariealert/screens/show_news_list.dart';
+import 'package:mariealert/utility/my_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Home extends StatefulWidget {
   @override
@@ -48,12 +52,7 @@ class _HomeState extends State<Home> {
   Widget showAppName() {
     return Text(
       appName,
-      style: TextStyle(
-        fontSize: 35.0,
-        color: fontColor,
-        fontWeight: FontWeight.normal,
-        fontFamily: 'Lobster',
-      ),
+      style: MyStyle().h1Style,
     );
   }
 
@@ -69,7 +68,7 @@ class _HomeState extends State<Home> {
       child: FlatButton(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        color: Colors.blue[600],
+        color: MyStyle().textColors,
         child: Text(
           'ลงชื่อเข้าใช้งาน',
           style: TextStyle(
@@ -90,14 +89,14 @@ class _HomeState extends State<Home> {
       width: mySizeButton,
       child: OutlineButton(
         borderSide: BorderSide(
-          color: Colors.blue[700],
+          color: MyStyle().textColors,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
         child: Text(
           'สมัครสมาชิก',
-          style: TextStyle(color: fontColor),
+          style: TextStyle(color: MyStyle().textColors),
         ),
         onPressed: () {
           var registerRoute =
@@ -118,7 +117,7 @@ class _HomeState extends State<Home> {
             Colors.white,
             Colors.blue[900],
           ],
-          radius: 1.5,
+          radius: 1.0,
           center: Alignment.center,
         )),
         child: Column(
