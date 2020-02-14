@@ -24,7 +24,7 @@ class _ShowDetailImageState extends State<ShowDetailImage> {
       height: MediaQuery.of(context).size.height,
       child: Image.network(
         urlImage,
-        fit: BoxFit.fill,
+        fit: BoxFit.contain,
       ),
     );
   }

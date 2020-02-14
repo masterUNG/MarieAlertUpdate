@@ -27,7 +27,7 @@ class _DetailNewsState extends State<DetailNews> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail News'),
+        title: Text('รายละเอียด'),
       ),
       body: DetailListView(widget.newsModel),
     );
