@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
-
 import 'package:mariealert/screens/authen.dart';
 import 'package:mariealert/screens/register.dart';
 import 'package:mariealert/screens/show_news_list.dart';
 import 'package:mariealert/utility/my_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class Home extends StatefulWidget {
   @override
@@ -18,6 +15,7 @@ class _HomeState extends State<Home> {
   String appName = 'Maria Care';
   double mySizeLogo = 130.0, mySizeButton = 180.0;
   Color fontColor = Colors.blue[800];
+  bool status = false;
 
   // Method
   @override
@@ -35,7 +33,17 @@ class _HomeState extends State<Home> {
           MaterialPageRoute(builder: (BuildContext context) => ShowNewsList());
       Navigator.of(context)
           .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+    } else {
+      setState(() {
+        status = true;
+      });
     }
+  }
+
+  Widget showProgress() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 
   Widget showLogo() {
@@ -110,26 +118,30 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: RadialGradient(
-          colors: [
-            Colors.white,
-            Colors.blue[900],
-          ],
-          radius: 1.0,
-          center: Alignment.center,
-        )),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            showLogo(),
-            mySizeBox(),
-            showAppName(),
-            signInButton(),
-            signUpButton(),
-          ],
-        ),
+      body: status ? showContent() : showProgress(),
+    );
+  }
+
+  Container showContent() {
+    return Container(
+      decoration: BoxDecoration(
+          gradient: RadialGradient(
+        colors: [
+          Colors.white,
+          Colors.blue[900],
+        ],
+        radius: 1.0,
+        center: Alignment.center,
+      )),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          showLogo(),
+          mySizeBox(),
+          showAppName(),
+          signInButton(),
+          signUpButton(),
+        ],
       ),
     );
   }

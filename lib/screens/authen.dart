@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:http/http.dart' show get;
+import 'package:mariealert/utility/my_style.dart';
 import 'dart:convert';
 import '../models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,9 +72,11 @@ class _AuthenState extends State<Authen> {
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white)),
-            focusedBorder:
-                UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: MyStyle().mainColors),
+            ),
             icon: Icon(
               Icons.account_box,
               color: Colors.white,
@@ -86,6 +89,8 @@ class _AuthenState extends State<Authen> {
         validator: (String value) {
           if (value.length == 0) {
             return messageHaveSpaceUser;
+          } else {
+            return null;
           }
         },
         onSaved: (String value) {
@@ -98,13 +103,16 @@ class _AuthenState extends State<Authen> {
   Widget passwordTextFromField() {
     return Container(
       margin: EdgeInsets.only(top: 8.0),
-      child: TextFormField(style: TextStyle(color: colorText),
+      child: TextFormField(
+        style: TextStyle(color: colorText),
         obscureText: true,
         decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white)),
-            focusedBorder:
-                UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: MyStyle().mainColors),
+            ),
             icon: Icon(
               Icons.lock,
               color: Colors.white,
@@ -117,6 +125,8 @@ class _AuthenState extends State<Authen> {
         validator: (String value) {
           if (value.length == 0) {
             return messageHaveSpacePassword;
+          } else {
+            return null;
           }
         },
         onSaved: (String value) {
@@ -128,6 +138,8 @@ class _AuthenState extends State<Authen> {
 
   Widget rememberCheckBox() {
     return CheckboxListTile(
+      checkColor: MyStyle().textColors,
+      activeColor: Colors.white,
       controlAffinity: ListTileControlAffinity.leading,
       title: Text(
         titleRemember,
@@ -138,7 +150,7 @@ class _AuthenState extends State<Authen> {
         onRememberCheck(value);
       },
     );
-  }
+  } 
 
   void onRememberCheck(bool value) {
     setState(() {
