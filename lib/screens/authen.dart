@@ -137,20 +137,25 @@ class _AuthenState extends State<Authen> {
   }
 
   Widget rememberCheckBox() {
-    return CheckboxListTile(
-      checkColor: MyStyle().textColors,
-      activeColor: Colors.white,
-      controlAffinity: ListTileControlAffinity.leading,
-      title: Text(
-        titleRemember,
-        style: TextStyle(color: Colors.white),
+    return Theme(
+      data: Theme.of(context).copyWith(
+        unselectedWidgetColor: Colors.white,
       ),
-      value: statusRemember,
-      onChanged: (bool value) {
-        onRememberCheck(value);
-      },
+      child: CheckboxListTile(
+        checkColor: MyStyle().textColors,
+        activeColor: Colors.white,
+        controlAffinity: ListTileControlAffinity.leading,
+        title: Text(
+          titleRemember,
+          style: TextStyle(color: Colors.white),
+        ),
+        value: statusRemember,
+        onChanged: (bool value) {
+          onRememberCheck(value);
+        },
+      ),
     );
-  } 
+  }
 
   void onRememberCheck(bool value) {
     setState(() {
