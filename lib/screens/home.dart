@@ -21,24 +21,10 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    checkPreference();
+    
   }
 
-  Future<void> checkPreference() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    bool statusBool = sharedPreferences.getBool('Remember');
-    print('statusBool = $statusBool');
-    if (statusBool) {
-      var serviceRoute =
-          MaterialPageRoute(builder: (BuildContext context) => ShowNewsList());
-      Navigator.of(context)
-          .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
-    } else {
-      setState(() {
-        status = true;
-      });
-    }
-  }
+  
 
   Widget showProgress() {
     return Center(
@@ -95,10 +81,7 @@ class _HomeState extends State<Home> {
   Widget signUpButton() {
     return Container(
       width: mySizeButton,
-      child: OutlineButton(
-        borderSide: BorderSide(
-          color: MyStyle().textColors,
-        ),
+      child: RaisedButton(color: Colors.white70,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
@@ -118,7 +101,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: status ? showContent() : showProgress(),
+      // body: status ? showContent() : showProgress(),
+      body: showContent(),
     );
   }
 
@@ -128,10 +112,10 @@ class _HomeState extends State<Home> {
           gradient: RadialGradient(
         colors: [
           Colors.white,
-          Colors.blue[900],
+          MyStyle().mainColors,
         ],
         radius: 1.0,
-        center: Alignment.center,
+        center: Alignment(0.0, -0.3),
       )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
