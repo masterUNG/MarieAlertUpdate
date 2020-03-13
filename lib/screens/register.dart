@@ -3,6 +3,7 @@ import 'package:http/http.dart' show get;
 import 'dart:convert';
 import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:mariealert/utility/my_style.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -75,7 +76,8 @@ class _RegisterState extends State<Register> {
             focusedBorder:
                 UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
             enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white)),
+              borderSide: BorderSide(color: MyStyle().textColors),
+            ),
             labelText: titleUser,
             labelStyle: TextStyle(color: Colors.white),
             helperText: helpUser,
@@ -181,7 +183,7 @@ class _RegisterState extends State<Register> {
         'http://tscore.ms.ac.th/App/getUserWhereUser.php?isAdd=true&User=$user';
     var response = await get(urlPHP);
     var result = json.decode(response.body);
-    
+
     if ('${result.toString()}' != 'null') {
       showSnackBar('เปลี่ยน ชื่อใช้งานใหม่ มีคนใช้ไปแล้วคะ');
     } else {
@@ -203,29 +205,37 @@ class _RegisterState extends State<Register> {
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
-          backgroundColor: Colors.blue[900],
           title: Text(titleAppBar),
           actions: <Widget>[uploadToServer(context)],
         ),
-        body: Form(
-          key: formKey,
-          child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment(-1, -1),
-                    colors: [Colors.blue[50], Colors.blue[900]])),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.topCenter,
-                  child: userTextFormField(),
-                ),
-                passwordTextFormField(),
-                registerButton(),
-              ],
-            ),
+        body: bodyContent());
+  }
+
+  Form bodyContent() {
+    return Form(
+      key: formKey,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            colors: <Color>[
+              Colors.white,
+              MyStyle().mainColors,
+            ],
+            radius: 1.0,
           ),
-        ));
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.topCenter,
+              child: userTextFormField(),
+            ),
+            passwordTextFormField(),
+            registerButton(),
+          ],
+        ),
+      ),
+    );
   }
 }
