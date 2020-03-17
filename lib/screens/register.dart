@@ -72,11 +72,11 @@ class _RegisterState extends State<Register> {
       child: TextFormField(
         style: TextStyle(color: Colors.yellow[600]),
         keyboardType: TextInputType.text,
-        decoration: InputDecoration(
+        decoration: InputDecoration(border: OutlineInputBorder(),
             focusedBorder:
-                UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: MyStyle().textColors),
+                OutlineInputBorder(borderSide: BorderSide(color: Colors.yellow.shade600)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
             ),
             labelText: titleUser,
             labelStyle: TextStyle(color: Colors.white),
@@ -221,19 +221,22 @@ class _RegisterState extends State<Register> {
               Colors.white,
               MyStyle().mainColors,
             ],
-            radius: 1.0,
+            radius: 1.2,
+            center: Alignment(0, -1.0),
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.topCenter,
-              child: userTextFormField(),
+        child: Center(
+          child: SingleChildScrollView(
+                    child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                MyStyle().showLogo,
+                userTextFormField(),
+                passwordTextFormField(),
+                registerButton(),
+              ],
             ),
-            passwordTextFormField(),
-            registerButton(),
-          ],
+          ),
         ),
       ),
     );

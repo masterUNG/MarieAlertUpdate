@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mariealert/screens/authen.dart';
 import 'package:mariealert/screens/register.dart';
-import 'package:mariealert/screens/show_news_list.dart';
 import 'package:mariealert/utility/my_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,25 +20,34 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    
+    checkStatus();
   }
 
-  
+  Future<void> checkStatus() async {
+    try {
+
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      bool remember = preferences.getBool('Remember');
+
+      if (remember) {
+        
+      } else {
+        setState(() {
+          status = true;
+        });
+      }
+      
+    } catch (e) {
+      print('e ====> ${e.toString()}');
+      setState(() {
+        status = true;
+      });
+    }
+  }
 
   Widget showProgress() {
     return Center(
       child: CircularProgressIndicator(),
-    );
-  }
-
-  Widget showLogo() {
-    return Container(
-      alignment: Alignment.topCenter,
-      child: Container(
-        width: mySizeLogo,
-        height: mySizeLogo,
-        child: Image.asset('images/logo1.png'),
-      ),
     );
   }
 
@@ -81,7 +89,8 @@ class _HomeState extends State<Home> {
   Widget signUpButton() {
     return Container(
       width: mySizeButton,
-      child: RaisedButton(color: Colors.white70,
+      child: RaisedButton(
+        color: Colors.white70,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
@@ -95,14 +104,6 @@ class _HomeState extends State<Home> {
           Navigator.of(context).push(registerRoute);
         },
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      // body: status ? showContent() : showProgress(),
-      body: showContent(),
     );
   }
 
@@ -120,13 +121,20 @@ class _HomeState extends State<Home> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          showLogo(),
+          MyStyle().showLogo,
           mySizeBox(),
           showAppName(),
           signInButton(),
           signUpButton(),
         ],
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: status ? showContent() : showProgress(),
     );
   }
 }

@@ -19,6 +19,14 @@ class MyStyle {
         fontFamily: 'Lobster',
       );
 
+  Widget showLogo = Container(
+      alignment: Alignment.topCenter,
+      child: Container(
+        width: 130.0,
+        height: 130.0,
+        child: Image.asset('images/logo1.png'),
+      ),
+    );
       
 
   MyStyle();

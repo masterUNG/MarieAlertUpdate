@@ -37,12 +37,12 @@ class _AuthenState extends State<Authen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     // getDataFromSharePreferance(context);
   }
 
-  void getDataFromSharePreferance(BuildContext context) async {
+  Future<void> getDataFromSharePreferance(BuildContext context) async {
     sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       bool currentStatus = sharedPreferences.getBool('Remember');
