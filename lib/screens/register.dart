@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mariealert/utility/my_style.dart';
 
+
+
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
@@ -27,7 +29,7 @@ class _RegisterState extends State<Register> {
   String messgeHaveSpace = 'กรุณา กรองข้อมูล ทุกช่อง คะ';
   String hindUser = 'ภาษาอังกฤษ ห้ามมีช่องว่าง';
   String helpUser = 'กรอก ชื่อ ที่เป็นภาษาอังกฤษ เท่านั้น';
-  String hiddPassword = 'กรอก รหัสที่อยากได้';
+  String hiddPassword = 'กรอก รหัสที่ต้องการ';
   String passwordFalse1 = 'รหัส ต้องมีไม่ต่ำกว่า 6 ตัวอักษร คะ';
 
   // Firebase
@@ -38,7 +40,7 @@ class _RegisterState extends State<Register> {
     super.initState();
 
     firebaseMessaging.getToken().then((String value) {
-      token = value;
+      token = value.trim();
     });
   }
 
@@ -72,9 +74,14 @@ class _RegisterState extends State<Register> {
       child: TextFormField(
         style: TextStyle(color: Colors.yellow[600]),
         keyboardType: TextInputType.text,
-        decoration: InputDecoration(border: OutlineInputBorder(),
-            focusedBorder:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.yellow.shade600)),
+        decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.account_box,
+              color: Colors.white,
+            ),
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600)),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white),
             ),
@@ -87,6 +94,8 @@ class _RegisterState extends State<Register> {
         validator: (String value) {
           if (checkHaveSpace(value)) {
             return titleHaveSpace;
+          } else {
+            return null;
           }
         },
         onSaved: (String value) {
@@ -143,11 +152,12 @@ class _RegisterState extends State<Register> {
       width: myWidthdou,
       child: TextFormField(
         style: TextStyle(color: Colors.yellow),
-        decoration: InputDecoration(
+        decoration: InputDecoration(prefixIcon: Icon(Icons.lock, color: Colors.white,),
+          border: OutlineInputBorder(),
           focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           enabledBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           labelText: titlePassword,
           labelStyle: TextStyle(color: Colors.white),
           hintText: hiddPassword,
@@ -160,10 +170,12 @@ class _RegisterState extends State<Register> {
             return messgeHaveSpace;
           } else if (value.length <= 5) {
             return passwordFalse1;
+          } else {
+            return null;
           }
         },
         onSaved: (String value) {
-          password = value;
+          password = value.trim();
         },
       ),
     );
@@ -227,12 +239,15 @@ class _RegisterState extends State<Register> {
         ),
         child: Center(
           child: SingleChildScrollView(
-                    child: Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 MyStyle().showLogo,
+                MyStyle().mySizeBox,
                 userTextFormField(),
+                MyStyle().mySizeBox,
                 passwordTextFormField(),
+                MyStyle().mySizeBox,
                 registerButton(),
               ],
             ),
