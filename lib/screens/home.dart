@@ -25,18 +25,15 @@ class _HomeState extends State<Home> {
 
   Future<void> checkStatus() async {
     try {
-
       SharedPreferences preferences = await SharedPreferences.getInstance();
       bool remember = preferences.getBool('Remember');
 
       if (remember) {
-        
       } else {
         setState(() {
           status = true;
         });
       }
-      
     } catch (e) {
       print('e ====> ${e.toString()}');
       setState(() {
