@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' show get;
-import 'dart:convert';
+
 import '../models/news_model.dart';
 import '../listviews/detail_listview.dart';
-import 'dart:async';
-import './show_detail_news.dart';
+
 
 class DetailNews extends StatefulWidget {
   final NewsModel newsModel;
@@ -17,7 +15,7 @@ class DetailNews extends StatefulWidget {
 class _DetailNewsState extends State<DetailNews> {
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     // int id = widget.idNewsInt;
     // getNewsFromJSON(id);

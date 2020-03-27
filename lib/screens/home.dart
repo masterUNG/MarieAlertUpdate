@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mariealert/screens/authen.dart';
 import 'package:mariealert/screens/register.dart';
+import 'package:mariealert/screens/show_news_list.dart';
 import 'package:mariealert/utility/my_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,12 +28,13 @@ class _HomeState extends State<Home> {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       bool remember = preferences.getBool('Remember');
+      print('remember = $remember');
 
       if (remember) {
-      } else {
-        setState(() {
-          status = true;
-        });
+        MaterialPageRoute route = MaterialPageRoute(
+          builder: (value) => ShowNewsList(),
+        );
+        Navigator.of(context).pushAndRemoveUntil(route, (value)=>false);
       }
     } catch (e) {
       print('e ====> ${e.toString()}');
@@ -54,8 +56,6 @@ class _HomeState extends State<Home> {
       style: MyStyle().h1Style,
     );
   }
-
-  
 
   Widget signInButton() {
     return Container(

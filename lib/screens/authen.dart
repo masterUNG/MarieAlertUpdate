@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:http/http.dart' show get;
+import 'package:mariealert/utility/my_constant.dart';
 import 'package:mariealert/utility/my_style.dart';
 import 'dart:convert';
 import '../models/user_model.dart';
@@ -37,7 +38,6 @@ class _AuthenState extends State<Authen> {
 
   @override
   void initState() {
-   
     super.initState();
     // getDataFromSharePreferance(context);
   }
@@ -56,28 +56,20 @@ class _AuthenState extends State<Authen> {
     });
   }
 
-  Widget showLogo() {
-    return Container(
-      width: 120.0,
-      height: 120.0,
-      child: Image.asset('images/logo1.png'),
-    );
-  }
-
   Widget userTextFromField() {
     return Container(
       margin: EdgeInsets.only(top: 24.0),
       child: TextFormField(
-        style: TextStyle(color: colorText),
+        style: TextStyle(color: MyStyle().textColors),
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white),
             ),
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: MyStyle().mainColors),
             ),
-            icon: Icon(
+            prefixIcon: Icon(
               Icons.account_box,
               color: Colors.white,
               size: 30.0,
@@ -104,16 +96,16 @@ class _AuthenState extends State<Authen> {
     return Container(
       margin: EdgeInsets.only(top: 8.0),
       child: TextFormField(
-        style: TextStyle(color: colorText),
+        style: TextStyle(color: MyStyle().textColors),
         obscureText: true,
         decoration: InputDecoration(
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white),
             ),
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: MyStyle().mainColors),
             ),
-            icon: Icon(
+            prefixIcon: Icon(
               Icons.lock,
               color: Colors.white,
               size: 30.0,
@@ -166,12 +158,13 @@ class _AuthenState extends State<Authen> {
 
   Widget loginButton(BuildContext context) {
     return RaisedButton(
-      color: Colors.blue[900],
+      color: Colors.white,
       shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(30.0)),
       child: Text(
         titleUser,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style:
+            TextStyle(color: MyStyle().textColors, fontWeight: FontWeight.bold),
       ),
       onPressed: () {
         // print('You Click Login');
@@ -181,7 +174,7 @@ class _AuthenState extends State<Authen> {
           print(
               'user ==> $user, password ==> $password, remember ==> $statusRemember');
           String urlAPI =
-              'http://tscore.ms.ac.th/App/getUserWhereUser.php?isAdd=true&User=$user';
+              '${MyConstant().urlGetUserWhereUser}?isAdd=true&User=$user';
           checkAuthen(context, urlAPI);
         }
       },
@@ -205,9 +198,9 @@ class _AuthenState extends State<Authen> {
       }
 
       if (password == truePassword) {
-        print('Authen True');
+        // print('Authen True');
         setupSharePreferance();
-        moveToNewsListView(context);
+        // moveToNewsListView(context);
       } else {
         print('Password False');
         showSnackBar(messagePasswordFalse);
@@ -215,14 +208,16 @@ class _AuthenState extends State<Authen> {
     }
   }
 
-  setupSharePreferance() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    setState(() {
+  Future<void> setupSharePreferance() async {
+    if (statusRemember) {
+      sharedPreferences = await SharedPreferences.getInstance();
       sharedPreferences.setBool('Remember', statusRemember);
       sharedPreferences.setInt('id', idLogin);
       sharedPreferences.setString('Type', typeLogin);
-      sharedPreferences.commit();
-    });
+      moveToNewsListView(context);
+    } else {
+      moveToNewsListView(context);
+    }
   }
 
   moveToNewsListView(BuildContext context) {
@@ -235,7 +230,7 @@ class _AuthenState extends State<Authen> {
   void showSnackBar(String message) {
     final snackBar = new SnackBar(
       content: Text(message),
-      backgroundColor: Colors.blue[900],
+      backgroundColor: MyStyle().alertColor,
       duration: new Duration(seconds: 6),
       action: new SnackBarAction(
         label: 'Close',
@@ -257,7 +252,7 @@ class _AuthenState extends State<Authen> {
           RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0)),
-            color: Colors.blue[900],
+            color: MyStyle().alertColor,
             child: Text(
               labelRegister,
               style:
@@ -280,13 +275,16 @@ class _AuthenState extends State<Authen> {
       child: Container(
         padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.lightBlue[50], Colors.blue[700]],
-                begin: Alignment(-1, -1))),
+          gradient: RadialGradient(
+            colors: [Colors.white, MyStyle().mainColors],
+            center: Alignment(0, -0.5),
+            radius: 0.8,
+          ),
+        ),
         child: Container(
           child: Column(
             children: <Widget>[
-              showLogo(),
+              MyStyle().showLogo,
               userTextFromField(),
               passwordTextFromField(),
               rememberCheckBox(),

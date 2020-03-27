@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mariealert/screens/show_detail_image.dart';
+import 'package:mariealert/utility/my_constant.dart';
 import '../models/news_model.dart';
 import '../screens/detail_news.dart';
 
@@ -38,6 +40,8 @@ class NewsListView extends StatelessWidget {
     return ListView.builder(
       itemCount: newsModels.length,
       itemBuilder: (context, int index) {
+        String urlPicture =
+            '${MyConstant().urlDomain}${newsModels[index].picture}';
         return GestureDetector(
           child: Container(
             decoration: index % 2 == 0
@@ -49,8 +53,14 @@ class NewsListView extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.all(10.0),
-                      child: Image.network(newsModels[index].picture,
-                          fit: BoxFit.cover),
+                      child: CachedNetworkImage(
+                        imageUrl: urlPicture,
+                        placeholder: (BuildContext context, String string) =>
+                            CircularProgressIndicator(),
+                        errorWidget:
+                            (BuildContext context, String string, error) =>
+                                Image.asset('images/question.png'),
+                      ),
                       constraints:
                           BoxConstraints.expand(width: 150.0, height: 150.0),
                     ),
@@ -65,7 +75,9 @@ class NewsListView extends StatelessWidget {
                       onPressed: () {
                         MaterialPageRoute materialPageRoute =
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return ShowDetailImage(url: newsModels[index].picture,);
+                          return ShowDetailImage(
+                            url: newsModels[index].picture,
+                          );
                         });
                         Navigator.of(context).push(materialPageRoute);
                       },
@@ -88,8 +100,8 @@ class NewsListView extends StatelessWidget {
           ),
           onTap: () {
             int idNewsInt = newsModels[index].id;
-            print('You Tap index = $index, idNewsInt = $idNewsInt');
-
+            // print('You Tap index = $index, idNewsInt = $idNewsInt');
+            
             var goToDetailNews = new MaterialPageRoute(
                 builder: (BuildContext context) => DetailNews(
                       newsModel: newsModels[index],

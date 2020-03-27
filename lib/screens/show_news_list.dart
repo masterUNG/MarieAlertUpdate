@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mariealert/screens/home.dart';
+import 'package:mariealert/utility/my_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,6 @@ import 'dart:async';
 import './show_children_list.dart';
 import './add_children.dart';
 
-
 class ShowNewsList extends StatefulWidget {
   @override
   _ShowNewsListState createState() => _ShowNewsListState();
@@ -24,7 +24,6 @@ class _ShowNewsListState extends State<ShowNewsList> {
   String titleTooltip = 'ออกจากผู้ใช้';
   String titleNotification = 'ข้อความจาก มาลี';
 
-  String urlJson = 'http://tscore.ms.ac.th/App/getAllNews.php';
   List<NewsModel> newModels = [];
   List<NotiModel> notiModels = [];
 
@@ -109,14 +108,28 @@ class _ShowNewsListState extends State<ShowNewsList> {
   }
 
   Future<void> getAllDataFromJson() async {
-    var response = await http.get(urlJson);
+    var response = await http.get(MyConstant().urlGetAllNews);
     var result = json.decode(response.body);
     // print(result);
-    setState(() {
-      for (var objJson in result) {
-        newModels.add(NewsModel.fromJSON(objJson));
-      }
-    });
+    for (var objJson in result) {
+      NewsModel newsModel = NewsModel.fromJSON(objJson);
+
+      String url = newsModel.picture;
+      print('url ====>>> $url');
+
+      // List<String> urls = url.split('/');
+      // print('urls[2] ===>>> ${urls[3]}${urls[4]}${urls[5]}');
+      //  String urlEditPic = 'http://192.168.64.2/marie/editNewsWhereId.php?isAdd=true&id=${newsModel.id}&Picture=${urls[3]}/${urls[4]}/${urls[5]}';
+      //  editNewsPicture(urlEditPic);
+
+      setState(() {
+        newModels.add(newsModel);
+      });
+    }
+  }
+
+  Future<void> editNewsPicture(String url)async{
+    await http.get(url);
   }
 
   Future<void> getCredectial() async {
@@ -155,12 +168,12 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
       for (var idCodeString in idCodeList) {
         print(idCodeString);
-        String urlPHP3 = 'http://tscore.ms.ac.th/App/editParentsStudentWhereIdCode.php?isAdd=true&idCode=${idCodeString.trim()}&parents=$currentToken';
+        String urlPHP3 =
+            'http://tscore.ms.ac.th/App/editParentsStudentWhereIdCode.php?isAdd=true&idCode=${idCodeString.trim()}&parents=$currentToken';
         var response3 = await http.get(urlPHP3);
         var result3 = json.decode(response3.body);
         print('Edit Token on Student $idCodeString ==> $result3');
       }
-
     }
   }
 
@@ -174,7 +187,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
     );
   }
 
-   Widget menuShowChildren() {
+  Widget menuShowChildren() {
     return ListTile(
       leading: Icon(
         Icons.child_friendly,

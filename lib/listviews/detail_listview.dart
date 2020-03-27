@@ -1,16 +1,22 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mariealert/screens/show_detail_image.dart';
+import 'package:mariealert/utility/my_constant.dart';
 import '../models/news_model.dart';
 
 class DetailListView extends StatelessWidget {
   NewsModel newsModel;
+  String urlPicture;
 
   DetailListView(this.newsModel);
 
   Widget showPicture() {
-    return Image.network(
-      newsModel.picture.toString(),
-      fit: BoxFit.fitHeight,
+    return CachedNetworkImage(
+      imageUrl: urlPicture,
+      placeholder: (BuildContext context, String string) =>
+          CircularProgressIndicator(),
+      errorWidget: (BuildContext context, String string, object) =>
+          Image.asset('images/question.png'),
     );
   }
 
@@ -29,6 +35,7 @@ class DetailListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    urlPicture = '${MyConstant().urlDomain}${newsModel.picture.toString()}';
     return ListView(
       children: <Widget>[
         Container(
@@ -47,7 +54,9 @@ class DetailListView extends StatelessWidget {
           onPressed: () {
             MaterialPageRoute materialPageRoute =
                 MaterialPageRoute(builder: (BuildContext context) {
-              return ShowDetailImage(url: newsModel.picture,);
+              return ShowDetailImage(
+                url: newsModel.picture,
+              );
             });
             Navigator.of(context).push(materialPageRoute);
           },
