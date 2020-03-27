@@ -55,11 +55,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget mySizeBox() {
-    return SizedBox(
-      height: 16.0,
-    );
-  }
+  
 
   Widget signInButton() {
     return Container(
@@ -119,7 +115,7 @@ class _HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           MyStyle().showLogo,
-          mySizeBox(),
+          MyStyle().mySizeBox,
           showAppName(),
           signInButton(),
           signUpButton(),

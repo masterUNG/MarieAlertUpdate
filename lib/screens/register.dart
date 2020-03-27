@@ -3,6 +3,7 @@ import 'package:http/http.dart' show get;
 import 'dart:convert';
 import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:mariealert/utility/my_constant.dart';
 import 'package:mariealert/utility/my_style.dart';
 
 
@@ -116,10 +117,10 @@ class _RegisterState extends State<Register> {
   void showSnackBar(String message) {
     SnackBar snackBar = SnackBar(
       duration: Duration(seconds: 8),
-      backgroundColor: Colors.blue[900],
+      backgroundColor: MyStyle().alertColor,
       content: Text(message),
       action: SnackBarAction(
-        textColor: Colors.yellow,
+        textColor: Colors.red,
         label: 'Close',
         onPressed: () {},
       ),
@@ -128,8 +129,9 @@ class _RegisterState extends State<Register> {
   }
 
   void checkUserAndUpload(BuildContext context) async {
+    String string = MyConstant().urlGetUserWhereUser;
     String urlCheckUser =
-        'http://tscore.ms.ac.th/App/getUserWhereUser.php?isAdd=true&User=$user';
+        '$string?isAdd=true&User=$user';
 
     var response = await get(urlCheckUser);
     var result = json.decode(response.body);
@@ -139,7 +141,7 @@ class _RegisterState extends State<Register> {
     } else {
       print('user = $user, password = $password, token = $token');
       String urlAddUser =
-          'http://tscore.ms.ac.th/App/addUser.php?isAdd=true&User=$user&Password=$password&Token=$token';
+          '${MyConstant().urlAddUser}?isAdd=true&User=$user&Password=$password&Token=$token';
       var responseAddUser = await get(urlAddUser);
       var resultAddUser = json.decode(responseAddUser.body);
       print('resultAddUser ==>> $resultAddUser');
@@ -191,24 +193,27 @@ class _RegisterState extends State<Register> {
   }
 
   Future<void> checkDulicateUser() async {
+    String string = MyConstant().urlGetUserWhereUser;
     String urlPHP =
-        'http://tscore.ms.ac.th/App/getUserWhereUser.php?isAdd=true&User=$user';
+        '$string?isAdd=true&User=$user';
     var response = await get(urlPHP);
     var result = json.decode(response.body);
+    // print('result ==> $result');
 
     if ('${result.toString()}' != 'null') {
       showSnackBar('เปลี่ยน ชื่อใช้งานใหม่ มีคนใช้ไปแล้วคะ');
     } else {
-      print('Can Register');
+      // print('Can Register');
       checkUserAndUpload(context);
     }
   }
 
   void checkValidate() {
-    print('Click Upload');
+    // print('Click Upload');
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      checkDulicateUser();
+      // checkDulicateUser();
+      checkUserAndUpload(context);
     }
   }
 

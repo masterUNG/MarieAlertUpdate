@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MyStyle {
   Color textColors = Color.fromARGB(0xff, 0x00, 0x08, 0xae);
   Color mainColors = Color.fromARGB(0xff, 0x0a, 0x32, 0xe1);
+  Color alertColor = Colors.orange;
 
   TextStyle h1Style = TextStyle(
     fontSize: 30.0,
