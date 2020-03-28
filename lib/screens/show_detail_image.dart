@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ShowDetailImage extends StatefulWidget {
@@ -22,9 +23,10 @@ class _ShowDetailImageState extends State<ShowDetailImage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      child: Image.network(
-        urlImage,
-        fit: BoxFit.contain,
+      child: CachedNetworkImage(
+        imageUrl: urlImage,
+        errorWidget: (BuildContext context, String string, object) =>
+            Image.asset('images/question.png'),
       ),
     );
   }

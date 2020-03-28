@@ -76,7 +76,7 @@ class NewsListView extends StatelessWidget {
                         MaterialPageRoute materialPageRoute =
                             MaterialPageRoute(builder: (BuildContext context) {
                           return ShowDetailImage(
-                            url: newsModels[index].picture,
+                            url: '${MyConstant().urlDomain}${newsModels[index].picture}',
                           );
                         });
                         Navigator.of(context).push(materialPageRoute);

@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'dart:developer';
 import 'package:http/http.dart' show get;
+import 'package:mariealert/utility/my_style.dart';
 import 'dart:convert';
 import '../models/children_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -260,53 +261,65 @@ class _AddChildrenState extends State<AddChildren> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.blue[400],
+    return Scaffold(
+      backgroundColor: Colors.blue[400],
       key: snackBarKey,
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Text(titleAppBar),
       ),
-      body: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(alignment: Alignment.center,
-              height: 100.0,
-              child: showAvata(),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20.0),
-              child: showName(),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: qrTextFormField(),
+      body: Center(
+        child: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                showAvatar(),
+                MyStyle().mySizeBox,
+                showName(),
+                MyStyle().mySizeBox,
+                showContent(context),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: scanButton(),
+                      ),
+                      Expanded(
+                        child: saveChildrenButton(context),
+                      )
+                    ],
                   ),
-                  findChildren()
-                ],
-              ),
+                )
+              ],
             ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: scanButton(),
-                  ),
-                  Expanded(
-                    child: saveChildrenButton(context),
-                  )
-                ],
-              ),
-            )
-          ],
+          ),
         ),
       ),
+    );
+  }
+
+  Container showContent(BuildContext context) {
+    return Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: qrTextFormField(),
+                    ),
+                    findChildren()
+                  ],
+                ),
+              );
+  }
+
+  Container showAvatar() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.3,
+      child: showAvata(),
     );
   }
 }

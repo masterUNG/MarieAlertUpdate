@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mariealert/screens/home.dart';
 import 'package:mariealert/utility/my_constant.dart';
+import 'package:mariealert/utility/my_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -128,7 +129,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
     }
   }
 
-  Future<void> editNewsPicture(String url)async{
+  Future<void> editNewsPicture(String url) async {
     await http.get(url);
   }
 
@@ -191,7 +192,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
     return ListTile(
       leading: Icon(
         Icons.child_friendly,
-        color: Colors.blue,
+        color: MyStyle().mainColors,
         size: 48.0,
       ),
       title: Text(
@@ -199,11 +200,11 @@ class _ShowNewsListState extends State<ShowNewsList> {
         style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
-            color: Colors.blue[800]),
+            color: MyStyle().mainColors),
       ),
       subtitle: Text(
         'ดูบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง',
-        style: TextStyle(color: Colors.blue[600]),
+        style: TextStyle(color: MyStyle().textColors),
       ),
       onTap: () {
         print('Click Memu1');
@@ -222,15 +223,15 @@ class _ShowNewsListState extends State<ShowNewsList> {
         style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
-            color: Colors.blue[800]),
+            color: MyStyle().mainColors),
       ),
       subtitle: Text(
         'เพิ่มบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง',
-        style: TextStyle(color: Colors.blue[600]),
+        style: TextStyle(color: MyStyle().textColors),
       ),
       leading: Icon(
         Icons.group_add,
-        color: Colors.blue,
+        color: MyStyle().mainColors,
         size: 48.0,
       ),
       onTap: () {
@@ -244,17 +245,17 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
   Widget menuLogOut() {
     return ListTile(
-      leading: Icon(Icons.sync, size: 48.0, color: Colors.blue),
+      leading: Icon(Icons.sync, size: 48.0, color: MyStyle().mainColors,),
       title: Text(
         'Log Out',
         style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
-            color: Colors.blue[800]),
+            color: MyStyle().mainColors),
       ),
       subtitle: Text(
         'การออกจาก User นี่ เพื่อ Login ใหม่',
-        style: TextStyle(color: Colors.blue[600]),
+        style: TextStyle(color: MyStyle().textColors),
       ),
       onTap: () {
         clearSharePreferance(context);
@@ -267,18 +268,18 @@ class _ShowNewsListState extends State<ShowNewsList> {
       leading: Icon(
         Icons.close,
         size: 48.0,
-        color: Colors.blue,
+        color: Colors.red,
       ),
       title: Text(
         'ออกจาก Application',
         style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
-            color: Colors.blue[800]),
+            color: MyStyle().mainColors),
       ),
       subtitle: Text(
         'ออกจาก App แต่ยังจดจำ User',
-        style: TextStyle(color: Colors.blue[600]),
+        style: TextStyle(color: MyStyle().textColors),
       ),
       onTap: () {
         exit(0);
@@ -293,7 +294,12 @@ class _ShowNewsListState extends State<ShowNewsList> {
       child: ListView(
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue[300]),
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                colors: <Color>[Colors.white, MyStyle().mainColors],
+                radius: 1.0,
+              ),
+            ),
             child: Container(
               padding: EdgeInsets.only(top: 10.0),
               child: Column(
@@ -301,16 +307,18 @@ class _ShowNewsListState extends State<ShowNewsList> {
                   Container(
                     width: 70.0,
                     height: 70.0,
-                    child: Image.asset('images/logo1.png'),
+                    child: MyStyle().showLogo,
                   ),
                   Text(
                     titleH1,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                      color: MyStyle().textColors,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     titleH2,
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: MyStyle().textColors),
                   )
                 ],
               ),
@@ -344,7 +352,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        backgroundColor: Colors.blue[900],
+        backgroundColor: MyStyle().mainColors,
         title: Text(titleAppbar),
         actions: <Widget>[exitApp()],
       ),
