@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mariealert/models/score_model.dart';
 import 'package:mariealert/screens/show_detail_image.dart';
+import 'package:mariealert/utility/my_constant.dart';
+import 'package:mariealert/utility/my_style.dart';
 
 class ScoreListView extends StatelessWidget {
   List<ScoreModel> scoreModels = [];
@@ -10,27 +13,32 @@ class ScoreListView extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.5,
       child: Column(
+        children: <Widget>[showTitleDate(), showContentDate(index)],
+      ),
+    );
+  }
+
+  Container showContentDate(int index) {
+    return Container(
+      alignment: Alignment.topLeft,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Container(
-            alignment: Alignment.topLeft,
-            child: Text(
-              'วันที่ :',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+          Text(
+            scoreModels[index].lasupdate,
+            style: TextStyle(fontStyle: FontStyle.italic),
           ),
-          Container(
-            alignment: Alignment.topLeft,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  scoreModels[index].lasupdate,
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ],
-            ),
-          )
         ],
+      ),
+    );
+  }
+
+  Container showTitleDate() {
+    return Container(
+      alignment: Alignment.topLeft,
+      child: Text(
+        'วันที่ :',
+        style: TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -136,9 +144,17 @@ class ScoreListView extends StatelessWidget {
   }
 
   Widget showImageAnExpand(int index, BuildContext context) {
+    String url = '${MyConstant().urlDomain}${scoreModels[index].img_Path}';
+    print('urlImageExpand ==> $url');
     return Column(
       children: <Widget>[
-        Image.network(scoreModels[index].img_Path),
+        CachedNetworkImage(
+          imageUrl: url,
+          placeholder: (BuildContext context, String string) =>
+              MyStyle().showProgress(),
+          errorWidget: (BuildContext context, String string, object) =>
+              MyStyle().showQuestion(),
+        ),
         FlatButton(
           child: Text(
             'ขยายภาพ',

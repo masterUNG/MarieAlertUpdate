@@ -44,11 +44,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Widget showProgress() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  
 
   Widget showAppName() {
     return Text(
@@ -127,7 +123,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: status ? showContent() : showProgress(),
+      body: status ? showContent() : MyStyle().showProgress(),
     );
   }
 }

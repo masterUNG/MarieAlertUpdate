@@ -1,9 +1,11 @@
-import 'dart:convert';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mariealert/screens/show_news_list.dart';
 import 'package:mariealert/screens/show_score_list.dart';
+import 'package:mariealert/utility/my_constant.dart';
+import 'package:mariealert/utility/my_style.dart';
 import '../models/children_model.dart';
-import 'package:http/http.dart' show get;
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChildrenListView extends StatelessWidget {
@@ -18,7 +20,7 @@ class ChildrenListView extends StatelessWidget {
   Widget showButtonScore(BuildContext context, int index) {
     return Container(
       child: FlatButton.icon(
-        color: Colors.blue[900],
+        color: MyStyle().mainColors,
         icon: Icon(
           Icons.score,
           color: Colors.white,
@@ -94,20 +96,35 @@ class ChildrenListView extends StatelessWidget {
   }
 
   Future<void> deleteChildrent(int index, BuildContext context) async {
-    String idCodeDelete = childrenModels[index].idcode;
-    idCodeList.removeWhere((items) => (items == idCodeDelete));
-    print('new idCodeList = $idCodeList');
+    try {
+      String idCodeDelete = childrenModels[index].idcode;
+      idCodeList.removeWhere((items) => (items == idCodeDelete));
+      print('new idCodeList = $idCodeList');
 
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    int idLogin = sharedPreferences.getInt('id');
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      int idLogin = sharedPreferences.getInt('id');
 
-    String urlString =
-        'http://tscore.ms.ac.th/App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${idCodeList.toString()}';
-    print('url = $urlString');
+      String urlString =
+          '${MyConstant().urlDomain}App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${idCodeList.toString()}';
+      print('url = $urlString');
 
-    var response = await get(urlString);
+      // var response = await get(urlString);
 
-    Navigator.of(context).pop();
+      await http.get(urlString).then((value) {
+        routeToListNew(context);
+      });
+    } catch (e) {
+      print('Error ==>>>> ${e.toString()}');
+      routeToListNew(context);
+    }
+  }
+
+  void routeToListNew(BuildContext context) {
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (value) => ShowNewsList(),
+    );
+    Navigator.of(context).pushAndRemoveUntil(route, (value) => false);
   }
 
   Widget cancleButton(BuildContext context) {
@@ -136,21 +153,19 @@ class ChildrenListView extends StatelessWidget {
   }
 
   Widget showImage(int index) {
-    String urlImage = childrenModels[index].imagePath.toString();
+    String urlImage =
+        '${MyConstant().urlDomain}${childrenModels[index].imagePath.toString()}';
 
-    if (urlImage.length != 0) {
-      return Container(
-        height: 200.0,
-        padding: EdgeInsets.all(20.0),
-        child: Image.network(urlImage),
-      );
-    } else {
-      return Container(
-        padding: EdgeInsets.all(20.0),
-        height: 200.0,
-        child: Image.asset('images/child.png'),
-      );
-    }
+    return Container(
+      height: 200.0,
+      child: CachedNetworkImage(
+        imageUrl: urlImage,
+        placeholder: (BuildContext context, String string) =>
+            MyStyle().showProgress(),
+        errorWidget: (BuildContext context, String string, object) =>
+            MyStyle().showQuestion(),
+      ),
+    );
   }
 
   Widget showName(int index) {

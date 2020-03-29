@@ -33,5 +33,15 @@ class MyStyle {
     height: 16.0,
   );
 
+  Widget showProgress() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget showQuestion(){
+    return Image.asset('images/question.png');
+  }
+
   MyStyle();
 }

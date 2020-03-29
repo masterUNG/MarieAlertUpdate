@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mariealert/utility/my_constant.dart';
+import 'package:mariealert/utility/my_style.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' show get;
@@ -21,10 +23,8 @@ class _ShowChildrenListState extends State<ShowChildrenList>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
     getSharePreferance();
   }
 
@@ -33,7 +33,7 @@ class _ShowChildrenListState extends State<ShowChildrenList>
     idLogin = sharedPreferences.getInt('id');
 
     String urlString =
-        'http://tscore.ms.ac.th/App/getUserWhereId.php?isAdd=true&id=$idLogin';
+        '${MyConstant().urlDomain}App/getUserWhereId.php?isAdd=true&id=$idLogin';
     var respense = await get(urlString);
     var result = json.decode(respense.body);
 
@@ -43,7 +43,7 @@ class _ShowChildrenListState extends State<ShowChildrenList>
       idCodeString = idCodeString.substring(1, ((idCodeString.length) - 1));
 
       idCodeLists = idCodeString.split(',');
-      print('idCodeList ==> $idCodeLists');
+      // print('idCodeList ==> $idCodeLists');
       getChildrenFromIdCode();
     }
   }
@@ -51,28 +51,28 @@ class _ShowChildrenListState extends State<ShowChildrenList>
   Future<void> getChildrenFromIdCode() async {
     for (var idCode in idCodeLists) {
       idCode = idCode.trim();
-      print('idCode ==> $idCode');
+      // print('idCode ==> $idCode');
       String urlString =
-          'http://tscore.ms.ac.th/App/getStudentWhereQR.php?isAdd=true&idcode=$idCode';
+          '${MyConstant().urlDomain}App/getStudentWhereQR.php?isAdd=true&idcode=$idCode';
       var response = await get(urlString);
       var result = json.decode(response.body);
-      print('result ==> $result');
+      // print('result ==> $result');
       ChildrenModel childrenModel;
       for (var objJSON in result) {
         childrenModel = ChildrenModel.objJSON(objJSON);
       }
 
-      print('childrenModel ==> ${childrenModel.toString()}');
+      // print('childrenModel ==> ${childrenModel.toString()}');
       setState(() {
         childrenModels.add(childrenModel);
-        print('childrenModels.length ==> ${childrenModels.length}');
+        // print('childrenModels.length ==> ${childrenModels.length}');
       });
     }
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -81,7 +81,7 @@ class _ShowChildrenListState extends State<ShowChildrenList>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // TODO: implement didChangeAppLifecycleState
+    
     super.didChangeAppLifecycleState(state);
     setState(() {
       _notification = state;
@@ -90,22 +90,12 @@ class _ShowChildrenListState extends State<ShowChildrenList>
 
   @override
   Widget build(BuildContext context) {
-    print("_appLiftcycleState ==> $_notification");
+    // print("_appLiftcycleState ==> $_notification");
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[900],
+        backgroundColor: MyStyle().mainColors,
         title: Text(titleAppBar),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.blue[900],
-      //   child: Icon(Icons.group_add),
-      //   onPressed: () {
-      //     print('You click Add');
-      //     var addChildrenRoute = MaterialPageRoute(
-      //         builder: (BuildContext context) => AddChildren());
-      //     Navigator.of(context).push(addChildrenRoute);
-      //   },
-      // ),
       body: ChildrenListView(childrenModels),
     );
   }

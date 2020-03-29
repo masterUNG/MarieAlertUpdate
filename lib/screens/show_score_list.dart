@@ -4,6 +4,8 @@ import 'package:mariealert/listviews/score_listview.dart';
 import 'dart:convert';
 
 import 'package:mariealert/models/score_model.dart';
+import 'package:mariealert/utility/my_constant.dart';
+import 'package:mariealert/utility/my_style.dart';
 
 class ShowScoreList extends StatefulWidget {
   final String idCode;
@@ -25,7 +27,7 @@ class _ShowScoreListState extends State<ShowScoreList> {
 
   Future<void> loadData() async {
     String idcode = widget.idCode;
-    String urlString = 'http://tscore.ms.ac.th/App/getScoreWhereIdCode.php?isAdd=true&idcode=$idcode';
+    String urlString = '${MyConstant().urlDomain}App/getScoreWhereIdCode.php?isAdd=true&idcode=$idcode';
     var response = await get(urlString);
     var result = json.decode(response.body);
     print('result = $result');
@@ -41,7 +43,7 @@ class _ShowScoreListState extends State<ShowScoreList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.blue[900],
+      appBar: AppBar(backgroundColor: MyStyle().mainColors,
         title: Text('แสดง คะแนน'),
       ),
       body: ScoreListView(scoreModels),

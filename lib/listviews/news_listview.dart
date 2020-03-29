@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mariealert/screens/show_detail_image.dart';
 import 'package:mariealert/utility/my_constant.dart';
+import 'package:mariealert/utility/my_style.dart';
 import '../models/news_model.dart';
 import '../screens/detail_news.dart';
 
@@ -56,10 +57,10 @@ class NewsListView extends StatelessWidget {
                       child: CachedNetworkImage(
                         imageUrl: urlPicture,
                         placeholder: (BuildContext context, String string) =>
-                            CircularProgressIndicator(),
+                            MyStyle().showProgress(),
                         errorWidget:
                             (BuildContext context, String string, error) =>
-                                Image.asset('images/question.png'),
+                                MyStyle().showQuestion(),
                       ),
                       constraints:
                           BoxConstraints.expand(width: 150.0, height: 150.0),
