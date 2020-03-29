@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'dart:developer';
 import 'package:http/http.dart' show get;
+import 'package:mariealert/utility/my_constant.dart';
 import 'package:mariealert/utility/my_style.dart';
 import 'dart:convert';
 import '../models/children_model.dart';
@@ -39,7 +41,7 @@ class _AddChildrenState extends State<AddChildren> {
     idLogin = idInt.toString();
 
     String urlString =
-        'http://tscore.ms.ac.th/App/getUserWhereId.php?isAdd=true&id=$idInt';
+        '${MyConstant().urlDomain}App/getUserWhereId.php?isAdd=true&id=$idInt';
     var response = await get(urlString);
     var result = json.decode(response.body);
     // print('result ==> $result');
@@ -84,21 +86,16 @@ class _AddChildrenState extends State<AddChildren> {
         scanQR();
         debugPrint('QRcode ==> $barcode');
         log('qrCode: $barcode');
-
-        // if (barcode.length != 0) {
-        //   textEditingController.text = barcode;
-        //   loadChildren();
-        // }
       },
     );
   }
 
   Widget showAvata() {
-    if (urlImage.length != 0) {
-      return Image.network(urlImage);
-    } else {
-      return Image.asset('images/child.png');
-    }
+    return CachedNetworkImage(
+      imageUrl: urlImage,
+      errorWidget: (value, url, object) => MyStyle().showQuestion(),
+      placeholder: (value, url)=>MyStyle().showProgress(),
+    );
   }
 
   Widget saveChildrenButton(BuildContext context) {
@@ -145,14 +142,14 @@ class _AddChildrenState extends State<AddChildren> {
 
   Future<void> uploadToServer(BuildContext context) async {
     String urlParents =
-        'http://tscore.ms.ac.th/App/editParentWhereIdCode.php?isAdd=true&idCode=$barcode&parents=$tokenString';
+        '${MyConstant().urlDomain}App/editParentWhereIdCode.php?isAdd=true&idCode=$barcode&parents=$tokenString';
     // print('urlParents ==> $urlParents');
     var parentsResponse = await get(urlParents);
     var resultParents = json.decode(parentsResponse.body);
     print('resultParents ==> $resultParents');
 
     String urlString =
-        'http://tscore.ms.ac.th/App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${listChildrens.toString()}';
+        '${MyConstant().urlDomain}App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${listChildrens.toString()}';
     var response = await get(urlString);
     var result = json.decode(response.body);
     if ((result.toString() != 'null')) {
@@ -178,7 +175,7 @@ class _AddChildrenState extends State<AddChildren> {
 
   Future loadChildren() async {
     String url =
-        'http://tscore.ms.ac.th/App/getStudentWhereQR.php?isAdd=true&idcode=$barcode';
+        '${MyConstant().urlDomain}App/getStudentWhereQR.php?isAdd=true&idcode=$barcode';
     var response = await get(url);
     var result = json.decode(response.body);
     print('result loadChildren ==> $result');
@@ -193,7 +190,8 @@ class _AddChildrenState extends State<AddChildren> {
         ChildrenModel childrenModel = ChildrenModel.objJSON(objJson);
         setState(() {
           nameChildren = childrenModel.fname.toString();
-          urlImage = childrenModel.imagePath.toString().trim();
+          urlImage =
+              '${MyConstant().urlDomain}${childrenModel.imagePath.toString().trim()}';
         });
       }
 
@@ -241,15 +239,24 @@ class _AddChildrenState extends State<AddChildren> {
 
   Widget qrTextFormField() {
     return TextFormField(
+      style: TextStyle(
+        color: MyStyle().alertColor,
+        fontWeight: FontWeight.bold,
+      ),
       keyboardType: TextInputType.number,
       controller: textEditingController,
       decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
         labelText: 'บาร์โค้ด',
         labelStyle: TextStyle(color: Colors.white),
       ),
       validator: (String value) {
         if (value.length == 0) {
           return 'Have Space';
+        } else {
+          return null;
         }
       },
       onSaved: (String value) {
@@ -266,7 +273,7 @@ class _AddChildrenState extends State<AddChildren> {
       key: snackBarKey,
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-        backgroundColor: Colors.blue[900],
+        backgroundColor: MyStyle().mainColors,
         title: Text(titleAppBar),
       ),
       body: Center(
@@ -281,19 +288,8 @@ class _AddChildrenState extends State<AddChildren> {
                 showName(),
                 MyStyle().mySizeBox,
                 showContent(context),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: scanButton(),
-                      ),
-                      Expanded(
-                        child: saveChildrenButton(context),
-                      )
-                    ],
-                  ),
-                )
+                MyStyle().mySizeBox,
+                showButton(context)
               ],
             ),
           ),
@@ -302,18 +298,34 @@ class _AddChildrenState extends State<AddChildren> {
     );
   }
 
+  Container showButton(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: scanButton(),
+          ),
+          Expanded(
+            child: saveChildrenButton(context),
+          )
+        ],
+      ),
+    );
+  }
+
   Container showContent(BuildContext context) {
     return Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: qrTextFormField(),
-                    ),
-                    findChildren()
-                  ],
-                ),
-              );
+      width: MediaQuery.of(context).size.width * 0.8,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: qrTextFormField(),
+          ),
+          findChildren()
+        ],
+      ),
+    );
   }
 
   Container showAvatar() {
